@@ -19,5 +19,12 @@
     set rental_status = #{paramsMap.status}
     where record_id = #{paramsMap.recordId}
   </update>
+
+  <select id="selectRecordByUserIdCarIdAndStatus" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select id, user_id, car_id, rental_status, create_time, update_time
+    from user_rental_record
+    where user_id = #{paramsMap.userId} and car_id = #{paramsMap.carId} and rental_status = #{paramsMap.status}
+    limit 1
+  </select>
   
 </mapper>

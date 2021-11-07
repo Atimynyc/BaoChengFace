@@ -10,4 +10,6 @@ public interface UserRentalRecordService {
 
     Integer updateUserRentalStatusRecordByRecordId(String status, String recordId);
 
+    UserRentalRecord selectRecordByUserIdCarIdAndStatus(String userId, String carId, String status);
+
 }

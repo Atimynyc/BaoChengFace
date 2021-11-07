@@ -40,7 +40,7 @@ public class CarRentalController {
 
     @PostMapping("/returnCar")
     public BCJSONResult returnCar(@RequestBody CarRentalBO carRentalBO) {
-        return carRentalService.rentalCar(carRentalBO.getUserId(), carRentalBO.getCarType());
+        return carRentalService.returnCar(carRentalBO.getUserId(), carRentalBO.getCarId());
     }
 
 }

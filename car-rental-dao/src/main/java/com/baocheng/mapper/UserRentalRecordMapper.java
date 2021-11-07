@@ -10,4 +10,6 @@ public interface UserRentalRecordMapper extends MyMapper<UserRentalRecord> {
 
     Integer updateRentalRecordByMap(@Param("paramsMap") Map<String, Object> map);
 
+    UserRentalRecord selectRecordByUserIdCarIdAndStatus(@Param("paramsMap") Map<String, Object> map);
+
 }

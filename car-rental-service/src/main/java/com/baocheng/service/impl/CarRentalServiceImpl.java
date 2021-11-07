@@ -85,7 +85,7 @@ public class CarRentalServiceImpl implements CarRentalService{
             userRentalRecordService.updateUserRentalStatusRecordByRecordId(
                     RentalStatusEnum.RENTAL_FAIL.getRentalStatus(), recordId);
 
-            return BCJSONResult.errorException(e.getMessage());
+            return BCJSONResult.errorException("system_error");
         }
 
         return BCJSONResult.ok(carStockInfoService.getCarStockInfoById(carId));
@@ -94,9 +94,35 @@ public class CarRentalServiceImpl implements CarRentalService{
     @Override
     public BCJSONResult returnCar(String userId, String carId) {
 
+        CarStockInfo carStockInfo = carStockInfoService.getCarStockInfoById(carId);
+        if (carStockInfo == null) {
+            return BCJSONResult.errorMsg("could not found the car's information");
+        }
 
+        UserRentalRecord userRentalRecord = userRentalRecordService.selectRecordByUserIdCarIdAndStatus(userId,
+                carId, RentalStatusEnum.RENTAL_SUCCESS.getRentalStatus());
+        if (userRentalRecord == null) {
+            return BCJSONResult.errorMsg("could not found user's rental record");
+        }
 
-        return null;
+        String recordId = userRentalRecord.getRecordId();
+
+        try {
+            // 1. enter return flow
+            userRentalRecordService.updateUserRentalStatusRecordByRecordId(
+                    RentalStatusEnum.IN_THE_BACK.getRentalStatus(), recordId);
+
+            //2. start change car status from in_rental to in_stock
+            this.startReturnCar(carId, recordId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            userRentalRecordService.updateUserRentalStatusRecordByRecordId(
+                    RentalStatusEnum.RETURN_FAIL.getRentalStatus(), recordId);
+
+            return BCJSONResult.errorException("system_error");
+        }
+
+        return BCJSONResult.ok();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -107,6 +133,16 @@ public class CarRentalServiceImpl implements CarRentalService{
         // 2. change user rental status
         userRentalRecordService.updateUserRentalStatusRecordByRecordId(
                 RentalStatusEnum.RENTAL_SUCCESS.getRentalStatus(), recordId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void startReturnCar(String carId, String recordId) {
+        // 1. start change car status from in_stock to in_rental
+        carStockInfoService.updateCardStockStatus(carId, CarStatusEnum.IN_STOCK.getCarStatus());
+
+        // 2. change user rental status
+        userRentalRecordService.updateUserRentalStatusRecordByRecordId(
+                RentalStatusEnum.RETURN_SUCCESS.getRentalStatus(), recordId);
     }
 
 }

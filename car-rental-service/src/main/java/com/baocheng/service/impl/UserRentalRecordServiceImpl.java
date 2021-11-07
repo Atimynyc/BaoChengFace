@@ -39,4 +39,12 @@ public class UserRentalRecordServiceImpl implements UserRentalRecordService{
         return userRentalRecordMapper.updateRentalRecordByMap(paramsMap);
     }
 
+    @Override
+    public UserRentalRecord selectRecordByUserIdCarIdAndStatus(String userId, String carId, String status) {
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("status", status);
+        paramsMap.put("userId", userId);
+        paramsMap.put("carId", carId);
+        return userRentalRecordMapper.selectRecordByUserIdCarIdAndStatus(paramsMap);
+    }
 }
