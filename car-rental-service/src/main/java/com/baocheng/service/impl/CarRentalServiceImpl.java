@@ -31,16 +31,17 @@ public class CarRentalServiceImpl implements CarRentalService{
     @Override
     public List<CarStockSumVO> getCarStockInfo() {
 
-        List<CarStockInfo> carStockInfoList = carStockInfoService.getCardStockInfoListByStatus(CarStatusEnum.IN_STOCK.getCarStatus());
+        List<CarStockInfo> carStockInfoList = carStockInfoService.getCardStockInfoListByStatus(null);
 
         Map<String, Integer> carStockSumMap = new HashMap<>();
         for (CarStockInfo carStockInfo : carStockInfoList) {
             String carType = carStockInfo.getCartype();
+            String carStatus = carStockInfo.getCarstatus();
             Integer sum = carStockSumMap.get(carType);
             if (sum == null) {
-                carStockSumMap.put(carType, 1);
+                carStockSumMap.put(carType, CarStatusEnum.IN_STOCK.getCarStatus().equals(carStatus) ? 1 : 0);
             } else {
-                carStockSumMap.put(carType, ++sum);
+                carStockSumMap.put(carType, CarStatusEnum.IN_STOCK.getCarStatus().equals(carStatus) ? ++sum : sum);
             }
         }
 

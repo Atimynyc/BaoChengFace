@@ -16,8 +16,12 @@
     <select id="getCarStockInfoListByCarStatus" resultMap="BaseResultMap" parameterType="java.lang.String">
         select csi.id, csi.carname, csi.carType, csi.carStatus
         from car_stock_info csi
-        where csi.carStatus = #{carStatus}
+        <if test="carStatus != null and carStatus != ''">
+            where csi.carStatus = #{carStatus}
+        </if>
     </select>
+
+
 
     <select id="getACarFromStock" resultMap="BaseResultMap" parameterType="java.lang.String">
         select csi.id, csi.carname, csi.carType, csi.carStatus
