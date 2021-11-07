@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baocheng.mapper.CarStockInfoMapper">
+    <resultMap id="BaseResultMap" type="com.baocheng.pojo.CarStockInfo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="carName" property="carname" jdbcType="VARCHAR"/>
+        <result column="carType" property="cartype" jdbcType="VARCHAR"/>
+        <result column="carStatus" property="carstatus" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getCarStockInfoListByCarStatus" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select csi.id, csi.carname, csi.carType, csi.carStatus
+        from car_stock_info csi
+        where csi.carStatus = #{carStatus}
+    </select>
+
+    <select id="getACarFromStock" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select csi.id, csi.carname, csi.carType, csi.carStatus
+        from car_stock_info csi
+        where csi.carType = #{carType}
+    </select>
+
+</mapper>

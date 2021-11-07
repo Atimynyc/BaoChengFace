@@ -7,7 +7,12 @@
           <element id="module-output" name="car-rental-api" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: com.imooc:error:1.0-SNAPSHOT" />
+          <element id="archive" name="car-rental-service-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="car-rental-service" />
+          </element>
+          <element id="archive" name="car-rental-dao-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="car-rental-dao" />
+          </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:2.1.5.RELEASE" />
