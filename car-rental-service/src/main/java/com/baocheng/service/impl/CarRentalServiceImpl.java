@@ -7,6 +7,7 @@ import com.baocheng.service.CarStockInfoService;
 import com.baocheng.service.UserRentalRecordService;
 import com.baocheng.service.common.BCJSONResult;
 import com.baocheng.service.enums.CarStatusEnum;
+import com.baocheng.service.enums.CarTypeNameEnum;
 import com.baocheng.service.enums.RentalStatusEnum;
 import com.baocheng.service.vo.CarStockSumVO;
 import org.n3r.idworker.Sid;
@@ -47,6 +48,7 @@ public class CarRentalServiceImpl implements CarRentalService{
         for (String key : carStockSumMap.keySet()) {
             CarStockSumVO carStockSumVO = new CarStockSumVO();
             carStockSumVO.setCarType(key);
+            carStockSumVO.setCarTypeName(CarTypeNameEnum.getTypeNameByType(key));
             carStockSumVO.setStockNum(carStockSumMap.get(key));
             carStockSumVOList.add(carStockSumVO);
         }
@@ -77,7 +79,7 @@ public class CarRentalServiceImpl implements CarRentalService{
             userRentalRecord.setUpdateTime(nowDate);
             userRentalRecordService.insertUserRentalRecord(userRentalRecord);
 
-            this.startRentalCar(nowDate, carId, recordId);
+            this.startRentalCar(carId, recordId);
         } catch (Exception e) {
             e.printStackTrace();
             userRentalRecordService.updateUserRentalStatusRecordByRecordId(
@@ -85,11 +87,20 @@ public class CarRentalServiceImpl implements CarRentalService{
 
             return BCJSONResult.errorException(e.getMessage());
         }
-        return BCJSONResult.ok();
+
+        return BCJSONResult.ok(carStockInfoService.getCarStockInfoById(carId));
+    }
+
+    @Override
+    public BCJSONResult returnCar(String userId, String carId) {
+
+
+
+        return null;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void startRentalCar(Date nowDate, String carId, String recordId) {
+    public void startRentalCar(String carId, String recordId) {
         // 1. start change car status from in_stock to in_rental
         carStockInfoService.updateCardStockStatus(carId, CarStatusEnum.IN_RENTAL.getCarStatus());
 

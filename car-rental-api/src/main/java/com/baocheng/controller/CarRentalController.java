@@ -35,7 +35,12 @@ public class CarRentalController {
 
     @PostMapping("/rentalCar")
     public BCJSONResult rentalCar(@RequestBody CarRentalBO carRentalBO) {
-        return carRentalService.rentalCar(carRentalBO.getUserId(), carRentalBO.getCardType());
+        return carRentalService.rentalCar(carRentalBO.getUserId(), carRentalBO.getCarType());
+    }
+
+    @PostMapping("/returnCar")
+    public BCJSONResult returnCar(@RequestBody CarRentalBO carRentalBO) {
+        return carRentalService.rentalCar(carRentalBO.getUserId(), carRentalBO.getCarType());
     }
 
 }

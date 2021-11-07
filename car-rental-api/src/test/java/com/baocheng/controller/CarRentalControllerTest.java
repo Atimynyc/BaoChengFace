@@ -2,6 +2,7 @@ package com.baocheng.controller;
 
 import com.baocheng.Application;
 import com.baocheng.service.bo.CarRentalBO;
+import com.baocheng.service.common.BCJSONResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +18,16 @@ public class CarRentalControllerTest {
 
     @Test
     public void searchStockInfo() throws Exception {
-
         System.out.println(carRentalController.searchStockInfo().getData().toString());
-
     }
 
     @Test
     public void rentalCar() throws Exception {
         CarRentalBO carRentalBO = new CarRentalBO();
-        carRentalBO.setCardType("1");
+        carRentalBO.setCarType("1");
         carRentalBO.setUserId("1");
-        carRentalController.rentalCar(carRentalBO);
-
+        BCJSONResult bcjsonResult = carRentalController.rentalCar(carRentalBO);
+        System.out.println("end");
     }
 
 }

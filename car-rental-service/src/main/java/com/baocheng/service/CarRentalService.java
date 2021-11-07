@@ -12,8 +12,26 @@ import java.util.List;
  **/
 public interface CarRentalService {
 
+    /**
+     * search car stock list
+     * @return
+     */
     List<CarStockSumVO> getCarStockInfo();
 
+    /**
+     * rental car
+     * @param userId
+     * @param carType
+     * @return
+     */
     BCJSONResult rentalCar(String userId, String carType);
+
+    /**
+     * return car
+     * @param userId
+     * @param carId
+     * @return
+     */
+    BCJSONResult returnCar(String userId, String carId);
 
 }

@@ -9,7 +9,9 @@ public class CarRentalBO {
 
     private String userId;
 
-    private String cardType;
+    private String carType;
+
+    private String carId;
 
     public String getUserId() {
         return userId;
@@ -19,11 +21,19 @@ public class CarRentalBO {
         this.userId = userId;
     }
 
-    public String getCardType() {
-        return cardType;
+    public String getCarType() {
+        return carType;
     }
 
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
+    public void setCarType(String carType) {
+        this.carType = carType;
+    }
+
+    public String getCarId() {
+        return carId;
+    }
+
+    public void setCarId(String carId) {
+        this.carId = carId;
     }
 }

@@ -12,4 +12,5 @@ public interface CarStockInfoService {
 
     Integer updateCardStockStatus(String carId, String status);
 
+    CarStockInfo getCarStockInfoById(String carId);
 }

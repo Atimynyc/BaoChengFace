@@ -34,4 +34,9 @@ public class CarStockInfoServiceImpl implements CarStockInfoService{
         paramsMap.put("id", Integer.parseInt(carId));
         return carStockInfoMapper.updateCardStockStatus(paramsMap);
     }
+
+    @Override
+    public CarStockInfo getCarStockInfoById(String carId) {
+        return carStockInfoMapper.selectByPrimaryKey(Integer.parseInt(carId));
+    }
 }
