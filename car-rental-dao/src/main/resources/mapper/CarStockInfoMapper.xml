@@ -22,7 +22,7 @@
     <select id="getACarFromStock" resultMap="BaseResultMap" parameterType="java.lang.String">
         select csi.id, csi.carname, csi.carType, csi.carStatus
         from car_stock_info csi
-        where csi.carType = #{carType}
+        where csi.carType = #{carType} and csi.carStatus = 1
         limit 1
     </select>
 
