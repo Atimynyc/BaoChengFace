@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ import java.util.List;
 @RestController
 public class CarRentalController {
 
-    @Resource
+    @Autowired
     private CarRentalService carRentalService;
 
     @PostMapping("/searchStockInfo")
@@ -36,10 +35,7 @@ public class CarRentalController {
 
     @PostMapping("/rentalCar")
     public BCJSONResult rentalCar(@RequestBody CarRentalBO carRentalBO) {
-
-
-
-        return BCJSONResult.ok();
+        return carRentalService.rentalCar(carRentalBO.getUserId(), carRentalBO.getCardType());
     }
 
 }

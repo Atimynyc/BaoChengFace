@@ -8,6 +8,6 @@ public interface UserRentalRecordService {
 
     Integer updateUserRentalRecordById(UserRentalRecord userRentalRecord);
 
-    Integer updateUserRentalStatusRecordByUserIdAndCarId(String status, String userId, String carId);
+    Integer updateUserRentalStatusRecordByRecordId(String status, String recordId);
 
 }

@@ -9,16 +9,23 @@ import com.baocheng.service.common.BCJSONResult;
 import com.baocheng.service.enums.CarStatusEnum;
 import com.baocheng.service.enums.RentalStatusEnum;
 import com.baocheng.service.vo.CarStockSumVO;
+import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Service
 public class CarRentalServiceImpl implements CarRentalService{
 
     @Autowired
     private CarStockInfoService carStockInfoService;
     @Autowired
     private UserRentalRecordService userRentalRecordService;
+    @Autowired
+    private Sid sid;
 
     @Override
     public List<CarStockSumVO> getCarStockInfo() {
@@ -50,30 +57,45 @@ public class CarRentalServiceImpl implements CarRentalService{
 
     @Override
     public BCJSONResult rentalCar(String userId, String carType) {
-
+        // 1. try to get one car from car stock by carType
+        CarStockInfo carStockInfo = carStockInfoService.getACarFromStockByType(carType);
+        if (carStockInfo == null) {
+            return BCJSONResult.errorMsg("The car of your choice is out of stock, pls try other car");
+        }
+        String carId = carStockInfo.getId().toString();
+        String recordId = sid.nextShort();
         try {
             Date nowDate = new Date();
-            // 1. try to get one car from car stock by carType
-            CarStockInfo carStockInfo = carStockInfoService.getACarFromStockByType(carType);
-            if (carStockInfo == null) {
-                return BCJSONResult.errorMsg("The car of your choice is out of stock, pls try other car");
-            }
 
             // 2. new add user rental car record
             UserRentalRecord userRentalRecord = new UserRentalRecord();
+            userRentalRecord.setRecordId(recordId);
             userRentalRecord.setUserId(userId);
-            userRentalRecord.setCarId(carStockInfo.getId().toString());
+            userRentalRecord.setCarId(carId);
             userRentalRecord.setRentalStatus(RentalStatusEnum.IN_TRADIN.getRentalStatus());
             userRentalRecord.setCreateTime(nowDate);
             userRentalRecord.setUpdateTime(nowDate);
             userRentalRecordService.insertUserRentalRecord(userRentalRecord);
 
-            // 3.
-
-
+            this.startRentalCar(nowDate, carId, recordId);
         } catch (Exception e) {
             e.printStackTrace();
+            userRentalRecordService.updateUserRentalStatusRecordByRecordId(
+                    RentalStatusEnum.RENTAL_FAIL.getRentalStatus(), recordId);
+
+            return BCJSONResult.errorException(e.getMessage());
         }
         return BCJSONResult.ok();
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void startRentalCar(Date nowDate, String carId, String recordId) {
+        // 1. start change car status from in_stock to in_rental
+        carStockInfoService.updateCardStockStatus(carId, CarStatusEnum.IN_RENTAL.getCarStatus());
+
+        // 2. change user rental status
+        userRentalRecordService.updateUserRentalStatusRecordByRecordId(
+                RentalStatusEnum.RENTAL_SUCCESS.getRentalStatus(), recordId);
+    }
+
 }

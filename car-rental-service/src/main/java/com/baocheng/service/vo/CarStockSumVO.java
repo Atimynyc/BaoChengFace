@@ -7,9 +7,19 @@ package com.baocheng.service.vo;
  **/
 public class CarStockSumVO {
 
+    private String carTypeName;
+
     private String carType;
 
     private Integer stockNum;
+
+    public String getCarTypeName() {
+        return carTypeName;
+    }
+
+    public void setCarTypeName(String carTypeName) {
+        this.carTypeName = carTypeName;
+    }
 
     public String getCarType() {
         return carType;

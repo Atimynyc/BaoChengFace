@@ -8,7 +8,10 @@ import java.util.Date;
 @Table(name = "user_rental_record")
 public class UserRentalRecord {
     @Id
-    private Integer id;
+    private Long id;
+
+    @Column(name = "record_id")
+    private String recordId;
 
     @Column(name = "user_id")
     private String userId;
@@ -28,15 +31,23 @@ public class UserRentalRecord {
     /**
      * @return id
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param id
      */
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(String recordId) {
+        this.recordId = recordId;
     }
 
     /**

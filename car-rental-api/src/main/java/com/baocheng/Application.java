@@ -10,7 +10,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 //扫描 mybatis 通用所在的包
 @MapperScan(basePackages = "com.baocheng.mapper")
 //扫描所有包以及相关组件包
-@ComponentScan(basePackages = {"com.baocheng"})
+@ComponentScan(basePackages = {"com.baocheng", "org.n3r.idworker"})
 public class Application {
 
     public static void main(String[] args) {

@@ -13,7 +13,7 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <select id="getCarStockInfoListByCarStatus" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="getCarStockInfoListByCarStatus" resultMap="BaseResultMap" parameterType="java.lang.String">
         select csi.id, csi.carname, csi.carType, csi.carStatus
         from car_stock_info csi
         where csi.carStatus = #{carStatus}
@@ -23,6 +23,14 @@
         select csi.id, csi.carname, csi.carType, csi.carStatus
         from car_stock_info csi
         where csi.carType = #{carType}
+        limit 1
     </select>
+
+    <update id="updateCardStockStatus"  parameterType="java.util.Map">
+        update car_stock_info
+        set carStatus = #{paramsMap.status} and
+        update_time = now()
+        where id = #{paramsMap.id}
+    </update>
 
 </mapper>

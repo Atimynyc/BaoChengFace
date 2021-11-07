@@ -14,6 +14,10 @@
   </resultMap>
   
   
-  <update id=""
+  <update id="updateRentalRecordByMap"  parameterType="java.util.Map">
+    update user_rental_record
+    set rental_status = #{paramsMap.status}
+    where record_id = #{paramsMap.recordId}
+  </update>
   
 </mapper>
